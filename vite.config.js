@@ -1,15 +1,20 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
-export default defineConfig({
-    base: '/build/',  // ビルド後の資産パスのベースURLを指定（public/buildに対応）
-    plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
-    ],
-    server: {
-        https: true,  // 開発サーバー起動時にHTTPSを有効化（devモード用）
-    },
+export default defineConfig(({ command, mode }) => {
+    // 環境変数からAPP_URLを取得（Viteはprocess.envに.envの値を展開している想定）
+    const appUrl = process.env.APP_URL || 'http://localhost';
+
+    return {
+        base: `${appUrl.replace(/\/$/, '')}/build/`, // 末尾のスラッシュは削除し、/build/を付与
+        plugins: [
+            laravel({
+                input: ['resources/css/app.css', 'resources/js/app.js'],
+                refresh: true,
+            }),
+        ],
+        server: {
+            https: true,
+        },
+    };
 });
