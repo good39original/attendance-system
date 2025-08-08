@@ -6,7 +6,7 @@ export default defineConfig(({ command, mode }) => {
     const appUrl = process.env.APP_URL || 'http://localhost';
 
     return {
-        base: `${appUrl.replace(/\/$/, '')}/build/`, // 末尾のスラッシュは削除し、/build/を付与
+        base: `/build/`, 
         plugins: [
             laravel({
                 input: ['resources/css/app.css', 'resources/js/app.js'],
